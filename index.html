@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Valentine 😈</title>
+
+  <style>
+    :root{
+      --bg1:#0b1020;
+      --bg2:#1a0b2e;
+      --hot:#ff2f8a;
+      --cool:#7b5cff;
+      --danger:#ff3b30;
+      --card: rgba(255,255,255,.08);
+      --stroke: rgba(255,255,255,.14);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.70);
+      --shadow: 0 25px 80px rgba(0,0,0,.55);
+      --r: 26px;
+    }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      overflow:hidden;
+      background:
+        radial-gradient(900px 500px at 20% 20%, rgba(123,92,255,.28), transparent 60%),
+        radial-gradient(800px 480px at 75% 35%, rgba(255,47,138,.22), transparent 60%),
+        linear-gradient(145deg, var(--bg1), var(--bg2));
+    }
+
+    /* Screen rage effects */
+    .rage-1 { animation: shake1 .18s linear 2, flash 120ms linear 2; }
+    .rage-2 { animation: shake2 .18s linear 3, flash 110ms linear 3; }
+    .rage-3 { animation: shake3 .16s linear 4, flash 95ms linear 4; }
+    .rage-4 { animation: shake4 .14s linear 5, flash 85ms linear 5; }
+    .rage-5 { animation: shake5 .12s linear 6, flash 75ms linear 6; }
+
+    @keyframes flash{
+      0%{ filter: none; }
+      50%{ filter: drop-shadow(0 0 0 rgba(0,0,0,0)) saturate(1.2) contrast(1.05); }
+      100%{ filter:none; }
+    }
+    @keyframes shake1{ 0%{transform:translate(0,0)} 25%{transform:translate(2px,-1px)} 50%{transform:translate(-2px,1px)} 75%{transform:translate(1px,2px)} 100%{transform:translate(0,0)} }
+    @keyframes shake2{ 0%{transform:translate(0,0)} 25%{transform:translate(3px,-2px)} 50%{transform:translate(-3px,2px)} 75%{transform:translate(2px,3px)} 100%{transform:translate(0,0)} }
+    @keyframes shake3{ 0%{transform:translate(0,0)} 25%{transform:translate(4px,-3px)} 50%{transform:translate(-4px,3px)} 75%{transform:translate(3px,4px)} 100%{transform:translate(0,0)} }
+    @keyframes shake4{ 0%{transform:translate(0,0)} 25%{transform:translate(6px,-4px)} 50%{transform:translate(-6px,4px)} 75%{transform:translate(4px,6px)} 100%{transform:translate(0,0)} }
+    @keyframes shake5{ 0%{transform:translate(0,0)} 25%{transform:translate(8px,-6px)} 50%{transform:translate(-8px,6px)} 75%{transform:translate(6px,8px)} 100%{transform:translate(0,0)} }
+
+    /* Background rage overlay */
+    .rageOverlay{
+      position:fixed; inset:0;
+      pointer-events:none;
+      opacity:0;
+      background:
+        radial-gradient(900px 500px at 60% 40%, rgba(255,59,48,.22), transparent 65%),
+        radial-gradient(700px 400px at 30% 60%, rgba(255,149,0,.14), transparent 65%);
+      transition: opacity .18s ease;
+      z-index: 2;
+      mix-blend-mode: screen;
+    }
+    .rageOn{ opacity:1; }
+
+    .wrap{
+      height:100%;
+      display:grid;
+      place-items:center;
+      padding:16px;
+      position:relative;
+      z-index:3;
+    }
+    .card{
+      width:min(860px,95vw);
+      background: var(--card);
+      border:1px solid var(--stroke);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      overflow:hidden;
+    }
+    .top{
+      padding:16px 18px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      background: linear-gradient(90deg, rgba(255,47,138,.12), rgba(123,92,255,.10));
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+    }
+    .badge{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.12);
+      font-size:13px;
+      color: var(--muted);
+    }
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, #fff, var(--hot));
+      box-shadow: 0 0 18px rgba(255,47,138,.45);
+    }
+    .hint{
+      font-size:13px;
+      color: var(--muted);
+      text-align:right;
+      line-height:1.25;
+    }
+
+    .content{
+      padding:20px 18px 18px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:16px;
+    }
+    @media (max-width: 860px){ .content{ grid-template-columns: 1fr; } .hint{text-align:left;} }
+
+    h1{ margin:0 0 10px; font-size: clamp(26px, 3.8vw, 44px); letter-spacing:-0.02em; }
+    .sub{ margin:0 0 12px; color: var(--muted); line-height:1.55; }
+
+    .stage{
+      position:relative;
+      height: 340px;
+      border-radius: 22px;
+      border:1px solid rgba(255,255,255,.16);
+      background:
+        radial-gradient(520px 320px at 30% 20%, rgba(255,47,138,.16), transparent 60%),
+        radial-gradient(520px 320px at 70% 40%, rgba(123,92,255,.15), transparent 65%),
+        linear-gradient(135deg, rgba(255,255,255,.06), rgba(0,0,0,.05));
+      overflow:hidden;
+      user-select:none;
+      touch-action:none;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
+    }
+    .stageHeader{
+      position:absolute; left:14px; right:14px; top:12px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; z-index:4;
+    }
+    .meter{
+      font-size:12px; color: rgba(255,255,255,.72);
+      padding:8px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .tries{
+      font-weight:800;
+      color: rgba(255,255,255,.92);
+    }
+
+    .btn{
+      border:0;
+      cursor:pointer;
+      font-weight: 750;
+      letter-spacing:.01em;
+      border-radius: 999px;
+      padding: 12px 16px;
+      box-shadow: 0 14px 32px rgba(0,0,0,.35);
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform .08s ease, filter .18s ease;
+    }
+    .btn:active{ transform: scale(.98); }
+    .btn:focus{ outline:2px solid rgba(255,255,255,.22); outline-offset:3px; }
+
+    .yes{
+      position:absolute; left:16px; top:62px; z-index:5;
+      color:#fff;
+      border:1px solid rgba(255,255,255,.16);
+      background: linear-gradient(135deg, rgba(255,47,138,.95), rgba(123,92,255,.95));
+    }
+    .yes:hover{ filter: brightness(1.05); }
+
+    .no{
+      position:absolute;
+      left: 62%;
+      top: 62%;
+      transform: translate(-50%,-50%);
+      z-index:5;
+      color: rgba(255,255,255,.92);
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.60);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      will-change: left, top;
+    }
+
+    /* confetti canvas */
+    canvas#fx{
+      position:fixed; inset:0;
+      pointer-events:none;
+      z-index: 50;
+    }
+
+    /* cats container */
+    .cats{
+      position:absolute;
+      left:14px; right:14px; bottom:12px;
+      display:none;
+      gap:12px;
+      z-index:6;
+      align-items:flex-end;
+      justify-content:space-between;
+    }
+    .cats.show{ display:flex; }
+    .catBox{
+      width:min(240px, 30%);
+      border-radius: 16px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.18);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 14px 40px rgba(0,0,0,.35);
+    }
+    .catBox .label{
+      font-size:12px;
+      padding:10px 10px 0;
+      color: rgba(255,255,255,.78);
+    }
+    .catBox .tenor-gif-embed{ margin: 6px 8px 10px; }
+
+    /* modal */
+    .overlay{
+      position:fixed; inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+      background: rgba(0,0,0,.84);
+      z-index: 200;
+    }
+    .overlay.show{ display:flex; }
+    .modal{
+      width:min(980px, 96vw);
+      border-radius: 22px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(12,12,18,.92);
+      box-shadow: 0 35px 90px rgba(0,0,0,.65);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      animation: pop .22s ease forwards;
+      transform: translateY(12px) scale(.98);
+    }
+    @keyframes pop{ to{ transform: translateY(0) scale(1); } }
+
+    .modal header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding:14px 14px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      background: linear-gradient(90deg, rgba(255,59,48,.18), rgba(255,149,0,.10));
+      color: rgba(255,255,255,.95);
+      font-weight: 900;
+      letter-spacing:.01em;
+      text-transform: uppercase;
+    }
+    .modal header small{
+      display:block;
+      font-weight:700;
+      opacity:.75;
+      text-transform:none;
+      letter-spacing:0;
+      margin-top:2px;
+    }
+    .close{
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.10);
+      color: rgba(255,255,255,.92);
+      border-radius: 12px;
+      padding: 9px 12px;
+      cursor:pointer;
+      font-weight: 800;
+    }
+    .modal img{
+      width:100%;
+      max-height: 78vh;
+      object-fit: contain;
+      background:#000;
+      display:block;
+      filter: saturate(1.2) contrast(1.05);
+    }
+
+    /* angry vignette */
+    .angerFrame{
+      position:absolute; inset:0;
+      pointer-events:none;
+      box-shadow: inset 0 0 0 2px rgba(255,59,48,.35), inset 0 0 110px rgba(255,59,48,.18);
+      animation: angerPulse .6s ease-in-out infinite alternate;
+    }
+    @keyframes angerPulse{
+      from{ opacity:.55; }
+      to{ opacity:1; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="rageOverlay" id="rageOverlay"></div>
+  <canvas id="fx"></canvas>
+
+  <div class="wrap">
+    <div class="card">
+      <div class="top">
+        <div class="badge"><span class="dot"></span> Défi: “Non” impossible</div>
+        <div class="hint" id="hint">Clique sur un choix 😇<br><span style="opacity:.85">Mais attention au “Non”.</span></div>
+      </div>
+
+      <div class="content">
+        <div>
+          <h1>Veux-tu être ma valentine kbida 💘</h1>
+          <p class="sub">
+            Clique sur “Oui” pour la paix.
+            Clique sur “Non” si tu veux déclencher le chaos.
+          </p>
+          <p class="sub" style="opacity:.9">
+            Règle: au <b>5ᵉ essai</b> sur “Non”, surprise… (mode énervé).
+          </p>
+        </div>
+
+        <div class="stage" id="stage" aria-label="Zone de jeu">
+          <div class="stageHeader">
+            <div class="meter">
+              Tentatives “Non” : <span class="tries" id="tries">0</span> / 5
+            </div>
+            <div class="meter" id="status">Calme… pour l’instant</div>
+          </div>
+
+          <button class="btn yes" id="yesBtn">Oui 💖</button>
+          <button class="btn no" id="noBtn">Non 😤</button>
+
+          <div class="cats" id="cats">
+            <div class="catBox">
+              <div class="label">Chat qui danse #1</div>
+              <div class="tenor-gif-embed" data-postid="3889862245866376125" data-share-method="host" data-aspect-ratio="0.566265" data-width="100%"></div>
+            </div>
+            <div class="catBox">
+              <div class="label">Chat qui danse #2</div>
+              <div class="tenor-gif-embed" data-postid="3889862245866376125" data-share-method="host" data-aspect-ratio="0.566265" data-width="100%"></div>
+            </div>
+            <div class="catBox">
+              <div class="label">Chat qui danse #3</div>
+              <div class="tenor-gif-embed" data-postid="3889862245866376125" data-share-method="host" data-aspect-ratio="0.566265" data-width="100%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Angry photo modal -->
+  <div class="overlay" id="overlay" role="dialog" aria-modal="true">
+    <div class="modal" id="modal">
+      <header>
+        <div>
+          MODE ÉNERVÉ ACTIVÉ
+          <small>Tu as insisté 5 fois…</small>
+        </div>
+        <button class="close" id="closeBtn">Fermer</button>
+      </header>
+      <div style="position:relative;">
+        <img src="IMG_7100.jpg" alt="Photo surprise" />
+        <div class="angerFrame"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- Elements
+    const stage = document.getElementById("stage");
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const triesEl = document.getElementById("tries");
+    const hint = document.getElementById("hint");
+    const statusEl = document.getElementById("status");
+    const rageOverlay = document.getElementById("rageOverlay");
+
+    const overlay = document.getElementById("overlay");
+    const closeBtn = document.getElementById("closeBtn");
+    const cats = document.getElementById("cats");
+
+    // ---------- State
+    let tries = 0;
+    let shown = false;
+
+    // ---------- Confetti (simple but effective)
+    const fx = document.getElementById("fx");
+    const ctx = fx.getContext("2d");
+    const confetti = [];
+
+    function resizeFx(){
+      fx.width = innerWidth * devicePixelRatio;
+      fx.height = innerHeight * devicePixelRatio;
+      ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+    }
+    addEventListener("resize", resizeFx);
+    resizeFx();
+
+    function burstConfetti(cx, cy, count=180){
+      for(let i=0;i<count;i++){
+        const a = Math.random()*Math.PI*2;
+        const s = 3 + Math.random()*7;
+        confetti.push({
+          x: cx, y: cy,
+          vx: Math.cos(a)*s*2,
+          vy: Math.sin(a)*s*2 - 8,
+          g: 0.22 + Math.random()*0.22,
+          r: 2 + Math.random()*4,
+          life: 120 + Math.random()*70,
+          rot: Math.random()*Math.PI,
+          vr: (Math.random()-.5)*0.25
+        });
+      }
+    }
+
+    function drawFx(){
+      ctx.clearRect(0,0,innerWidth,innerHeight);
+      for(let i=confetti.length-1; i>=0; i--){
+        const p = confetti[i];
+        p.vy += p.g;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vr;
+        p.life -= 1;
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        const grad = ctx.createLinearGradient(-6,0,6,0);
+        grad.addColorStop(0, "rgba(255,47,138,.95)");
+        grad.addColorStop(1, "rgba(123,92,255,.95)");
+        ctx.fillStyle = grad;
+
+        ctx.beginPath();
+        if (i % 2 === 0) ctx.rect(-p.r, -p.r, p.r*2.2, p.r*1.6);
+        else { ctx.moveTo(-p.r, p.r); ctx.lineTo(0, -p.r); ctx.lineTo(p.r, p.r); ctx.closePath(); }
+        ctx.fill();
+        ctx.restore();
+
+        if(p.life<=0 || p.y>innerHeight+40) confetti.splice(i,1);
+      }
+      requestAnimationFrame(drawFx);
+    }
+    drawFx();
+
+    // ---------- Tenor embed loader (once)
+    function loadTenorEmbed(){
+      if (document.getElementById("tenor-embed-script")) return;
+      const s = document.createElement("script");
+      s.id = "tenor-embed-script";
+      s.async = true;
+      s.src = "https://tenor.com/embed.js";
+      document.body.appendChild(s);
+    }
+
+    // ---------- Modal
+    function openAngry(){
+      if (shown) return;
+      shown = true;
+      overlay.classList.add("show");
+      hint.innerHTML = "Oups… 😭<br><span style='opacity:.85'>T’as trop insisté.</span>";
+      statusEl.textContent = "Trop tard.";
+    }
+    function closeAngry(){
+      overlay.classList.remove("show");
+    }
+    closeBtn.addEventListener("click", closeAngry);
+    overlay.addEventListener("click", (e)=>{ if(e.target===overlay) closeAngry(); });
+
+    // ---------- No button movement (never stuck in corners)
+    const clamp = (v,min,max)=>Math.max(min, Math.min(max,v));
+
+    function getStageRect(){ return stage.getBoundingClientRect(); }
+    function getBtnRect(){ return noBtn.getBoundingClientRect(); }
+
+    function moveNoAwayFrom(pointerX, pointerY){
+      const rect = getStageRect();
+      const b = getBtnRect();
+      const pad = 16;
+
+      const minX = pad;
+      const minY = pad + 48; // keep away from header area
+      const maxX = rect.width - b.width - pad;
+      const maxY = rect.height - b.height - pad;
+
+      // Try multiple random positions, choose one far from pointer and not near corners
+      let best = null;
+      let bestScore = -Infinity;
+
+      for(let i=0;i<18;i++){
+        const x = minX + Math.random()*(maxX-minX);
+        const y = minY + Math.random()*(maxY-minY);
+
+        // distance from pointer
+        const dx = (x + b.width/2) - pointerX;
+        const dy = (y + b.height/2) - pointerY;
+        const dist = Math.hypot(dx,dy);
+
+        // penalty if near corners (avoid "blocking")
+        const cornerMargin = 36;
+        const nearLeft   = x < minX + cornerMargin;
+        const nearRight  = x > maxX - cornerMargin;
+        const nearTop    = y < minY + cornerMargin;
+        const nearBottom = y > maxY - cornerMargin;
+        const cornerPenalty = (nearLeft && nearTop) || (nearRight && nearTop) || (nearLeft && nearBottom) || (nearRight && nearBottom) ? 250 : 0;
+
+        // slight penalty if too close to any edge
+        const edgePenalty = (
+          Math.max(0, (minX + cornerMargin) - x) +
+          Math.max(0, x - (maxX - cornerMargin)) +
+          Math.max(0, (minY + cornerMargin) - y) +
+          Math.max(0, y - (maxY - cornerMargin))
+        );
+
+        const score = dist - cornerPenalty - edgePenalty*3;
+        if(score > bestScore){
+          bestScore = score;
+          best = {x,y};
+        }
+      }
+
+      const nx = clamp(best.x, minX, maxX);
+      const ny = clamp(best.y, minY, maxY);
+
+      noBtn.style.left = `${nx}px`;
+      noBtn.style.top  = `${ny}px`;
+      noBtn.style.transform = "translate(0,0)";
+    }
+
+    // Init position in pixels (so our move function can take over)
+    function initNo(){
+      const rect = getStageRect();
+      noBtn.style.left = `${rect.width*0.62}px`;
+      noBtn.style.top  = `${rect.height*0.62}px`;
+      noBtn.style.transform = "translate(-50%,-50%)";
+      // once set, switch to px-based to avoid transform issues
+      requestAnimationFrame(()=>{
+        const r = noBtn.getBoundingClientRect();
+        const s = rect;
+        const x = (r.left - s.left);
+        const y = (r.top  - s.top);
+        noBtn.style.left = `${x}px`;
+        noBtn.style.top  = `${y}px`;
+        noBtn.style.transform = "translate(0,0)";
+      });
+    }
+    initNo();
+    addEventListener("resize", ()=>{ if(!shown) initNo(); });
+
+    // ---------- Rage effects
+    function rage(level){
+      const cls = `rage-${level}`;
+      document.body.classList.remove("rage-1","rage-2","rage-3","rage-4","rage-5");
+      document.body.classList.add(cls);
+
+      rageOverlay.classList.add("rageOn");
+      setTimeout(()=>rageOverlay.classList.remove("rageOn"), 220);
+
+      // remove shake class after animation so it can replay
+      setTimeout(()=>document.body.classList.remove(cls), 420);
+    }
+
+    function setStatus(level){
+      const msgs = [
+        "Calme… pour l’instant",
+        "Ok… c’est bizarre 😅",
+        "Stop… STOP 😭",
+        "Ça commence à m’énerver 😤",
+        "Dernier avertissement…",
+        "MODE ÉNERVÉ 🔥"
+      ];
+      statusEl.textContent = msgs[Math.min(level, msgs.length-1)];
+    }
+
+    // ---------- "Non" click handler
+    function onNoAttempt(e){
+      if (shown) return;
+
+      tries++;
+      triesEl.textContent = tries;
+
+      const level = Math.min(tries, 5);
+      rage(level);
+      setStatus(level);
+
+      // pointer position in stage coords
+      const rect = getStageRect();
+      const cx = (e.clientX ?? (e.touches && e.touches[0].clientX) ?? (rect.left + rect.width/2));
+      const cy = (e.clientY ?? (e.touches && e.touches[0].clientY) ?? (rect.top + rect.height/2));
+      const px = cx - rect.left;
+      const py = cy - rect.top;
+
+      // Move away NOW (no corner blocking)
+      moveNoAwayFrom(px, py);
+
+      if (tries === 1) hint.innerHTML = "Hein ? 😅<br><span style='opacity:.85'>Pourquoi tu cliques sur Non ?</span>";
+      if (tries === 3) hint.innerHTML = "Tu insistes là… 😭<br><span style='opacity:.85'>L’écran va péter.</span>";
+      if (tries === 4) hint.innerHTML = "Dernier essai… 😤<br><span style='opacity:.85'>Je te préviens.</span>";
+
+      if (tries >= 5){
+        openAngry();
+      }
+    }
+
+    // Use pointerdown so it triggers instantly and feels “real”
+    noBtn.addEventListener("pointerdown", (e)=>{ e.preventDefault(); onNoAttempt(e); });
+    // Also escape when cursor gets close (optional bonus)
+    noBtn.addEventListener("mouseenter", (e)=>{
+      if (shown) return;
+      const rect = getStageRect();
+      moveNoAwayFrom(rect.width*0.55, rect.height*0.55);
+    });
+
+    // ---------- "Oui" click handler
+    yesBtn.addEventListener("click", ()=>{
+      const r = yesBtn.getBoundingClientRect();
+      burstConfetti(r.left + r.width/2, r.top + r.height/2, 220);
+
+      hint.innerHTML = "Wiii 💖<br><span style='opacity:.85'>Bonne réponse.</span>";
+      statusEl.textContent = "Paix retrouvée ✅";
+
+      // show cats
+      cats.classList.add("show");
+      loadTenorEmbed(); // loads https://tenor.com/embed.js
+    });
+  </script>
+</body>
+</html>
